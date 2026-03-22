@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://127.0.0.1:5500/smart%20dine%20restaurant.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Smart Dine Restaurant</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f6f6f6;
+}
+
+header{
+background:#8B0000;
+color:white;
+padding:18px;
+text-align:center;
+font-size:24px;
+}
+
+.container{
+padding:20px;
+}
+
+.section{
+background:white;
+padding:15px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:6px;
+background:#ff6b00;
+color:white;
+cursor:pointer;
+margin-top:5px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.item{
+background:#fafafa;
+padding:10px;
+border-radius:8px;
+text-align:center;
+}
+
+.bill{
+font-weight:bold;
+font-size:18px;
+}
+
+#notification{
+display:none;
+background:#4CAF50;
+color:white;
+padding:12px;
+margin-top:15px;
+border-radius:6px;
+}
+
+.kitchen{
+background:#222;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+🍽 Smart Dine Restaurant
+</header>
+
+<div class="container">
+
+<!-- Table -->
+<div class="section">
+<h3>Table Number</h3>
+<input type="number" id="table" placeholder="Enter Table Number">
+</div>
+
+<!-- Service -->
+<div class="section">
+<h3>Select Service</h3>
+
+<button onclick="selectService(&#39;self&#39;)">
+Self Service (Free)
+</button>
+
+<button onclick="selectService(&#39;waiter&#39;)">
+Waiter Service (+₹40)
+</button>
+
+<p id="serviceType">Service: Not selected</p>
+
+</div>
+
+<!-- Menu -->
+<div class="section">
+
+<h3>Menu</h3>
+
+<div class="menu">
+
+<div class="item">
+Pizza ₹150
+<br>
+<button onclick="addItem(&#39;Pizza&#39;,150)">Add</button>
+</div>
+
+<div class="item">
+Burger ₹90
+<br>
+<button onclick="addItem(&#39;Burger&#39;,90)">Add</button>
+</div>
+
+<div class="item">
+Pasta ₹120
+<br>
+<button onclick="addItem(&#39;Pasta&#39;,120)">Add</button>
+</div>
+
+<div class="item">
+Juice ₹60
+<br>
+<button onclick="addItem(&#39;Juice&#39;,60)">Add</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- Bill -->
+<div class="section">
+
+<h3>Your Bill</h3>
+
+<p>Food Total: ₹ <span id="foodTotal">0</span></p>
+<p>Service Charge: ₹ <span id="serviceCharge">0</span></p>
+
+<p class="bill">
+Total: ₹ <span id="total">0</span>
+</p>
+
+<button onclick="placeOrder()">
+Place Order
+</button>
+
+<div id="notification">
+🔔 Your food is ready! Please collect it.
+</div>
+
+</div>
+
+
+<!-- Kitchen Panel (Demo) -->
+<div class="kitchen">
+
+<h3>👨‍🍳 Kitchen Panel (Demo)</h3>
+
+<p>Chef clicks when order is ready</p>
+
+<button onclick="foodReady()">
+Mark Food Ready
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let foodTotal = 0
+let serviceCharge = 0
+let serviceType = ""
+
+function selectService(type){
+
+serviceType = type
+
+if(type === "waiter"){
+serviceCharge = 40
+document.getElementById("serviceType").innerText =
+"Service: Waiter Service"
+}
+else{
+serviceCharge = 0
+document.getElementById("serviceType").innerText =
+"Service: Self Service"
+}
+
+updateBill()
+
+}
+
+function addItem(name,price){
+
+foodTotal += price
+
+updateBill()
+
+}
+
+function updateBill(){
+
+document.getElementById("foodTotal").innerText = foodTotal
+document.getElementById("serviceCharge").innerText = serviceCharge
+
+document.getElementById("total").innerText =
+foodTotal + serviceCharge
+
+}
+
+function placeOrder(){
+
+let table = document.getElementById("table").value
+
+if(table == ""){
+alert("Please enter table number")
+return
+}
+
+alert("Order placed successfully!")
+
+}
+
+function foodReady(){
+
+document.getElementById("notification").style.display="block"
+
+}
+
+</script>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+</body></html>
